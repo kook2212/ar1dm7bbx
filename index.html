@@ -1,0 +1,459 @@
+<!DOCTYPE html><html><head><meta name="x-poe-datastore-behavior" content="local_only"><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;"><meta http-equiv="x-dns-prefetch-control" content="off"><script src="https://puc.poecdn.net/authenticated_preview_page/standard.3ef2c256959faf5a756d.js"></script>
+    <meta charset="utf-8">
+    <title>Poe</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://puc.poecdn.net/authenticated_preview_page/disableWebRTC.9710cebe07429a9e8e06.js"></script><meta name="x-poe-allow-downloads" content="true"><meta name="x-poe-datastore-behavior" content="disabled"><script src="https://puc.poecdn.net/authenticated_preview_page/tw.b9024aecac666455e183.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/deps.faccd16000d314dc16d5.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/exports.b0f0f482cdeb5302b0b9.js"></script><script src="https://puc.poecdn.net/authenticated_preview_page/renderer.75c73ae6b4235f62945a.js"></script><script>Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _react = require('react'); var _react2 = _interopRequireDefault(_react);
+var _framermotion = require('framer-motion');
+var _lucidereact = require('lucide-react');
+
+// --- 音效設定 ---
+const SOUNDS = {
+  bgm: "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a73467.mp3?filename=background-music-simple-piano-melody-15636.mp3",
+  correct: "https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3",
+  wrong: "https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3",
+  click: "https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3",
+};
+
+// --- 題庫 ---
+const QUESTION_POOL = [
+  {
+    id: 'w1',
+    question: "冬天去公園玩，應該穿什麼衣服最保暖？",
+    options: [
+      { id: 'A', text: "短袖T恤", icon: "👕", isCorrect: false },
+      { id: 'B', text: "羽絨外套", icon: "🧥", isCorrect: true },
+      { id: 'C', text: "泳衣", icon: "🩱", isCorrect: false },
+    ]
+  },
+  {
+    id: 'w2',
+    question: "夏天太陽好大，出門要戴什麼保護頭部？",
+    options: [
+      { id: 'A', text: "毛帽", icon: "🧶", isCorrect: false },
+      { id: 'B', text: "遮陽帽", icon: "🧢", isCorrect: true },
+      { id: 'C', text: "安全帽", icon: "⛑️", isCorrect: false },
+    ]
+  },
+  {
+    id: 'w3',
+    question: "下雨天出門，除了帶傘還要穿什麼？",
+    options: [
+      { id: 'A', text: "雨鞋", icon: "👢", isCorrect: true },
+      { id: 'B', text: "拖鞋", icon: "🩴", isCorrect: false },
+      { id: 'C', text: "布鞋", icon: "👟", isCorrect: false },
+    ]
+  },
+  {
+    id: 'o1',
+    question: "睡覺的時候，穿什麼最舒服？",
+    options: [
+      { id: 'A', text: "牛仔褲", icon: "👖", isCorrect: false },
+      { id: 'B', text: "睡衣", icon: "👚", isCorrect: true },
+      { id: 'C', text: "西裝", icon: "👔", isCorrect: false },
+    ]
+  },
+  {
+    id: 'o2',
+    question: "去參加正式的婚禮，男生通常會穿什麼？",
+    options: [
+      { id: 'A', text: "西裝", icon: "👔", isCorrect: true },
+      { id: 'B', text: "睡衣", icon: "👚", isCorrect: false },
+      { id: 'C', text: "泳褲", icon: "🩳", isCorrect: false },
+    ]
+  },
+  {
+    id: 'j1',
+    question: "廚師煮飯的時候，為了乾淨會穿什麼？",
+    options: [
+      { id: 'A', text: "圍裙", icon: "🎽", isCorrect: true },
+      { id: 'B', text: "雨衣", icon: "🧥", isCorrect: false },
+      { id: 'C', text: "大衣", icon: "🧥", isCorrect: false },
+    ]
+  },
+  {
+    id: 'j2',
+    question: "醫生看病的時候，通常穿什麼顏色的袍子？",
+    options: [
+      { id: 'A', text: "黑色", icon: "⚫", isCorrect: false },
+      { id: 'B', text: "白色", icon: "⚪", isCorrect: true },
+      { id: 'C', text: "紅色", icon: "🔴", isCorrect: false },
+    ]
+  },
+  {
+    id: 'h1',
+    question: "洗完澡出來，為了把身體擦乾要用什麼？",
+    options: [
+      { id: 'A', text: "浴巾", icon: "🧖", isCorrect: true },
+      { id: 'B', text: "圍巾", icon: "🧣", isCorrect: false },
+      { id: 'C', text: "桌布", icon: "🧊", isCorrect: false },
+    ]
+  },
+  {
+    id: 'h2',
+    question: "在家裡的地板走來走去，穿什麼比較舒服？",
+    options: [
+      { id: 'A', text: "室內拖鞋", icon: "🩴", isCorrect: true },
+      { id: 'B', text: "雨鞋", icon: "👢", isCorrect: false },
+      { id: 'C', text: "溜冰鞋", icon: "⛸️", isCorrect: false },
+    ]
+  },
+  {
+    id: 'h4',
+    question: "現在外面病毒很多，出門要戴什麼保護自己？",
+    options: [
+      { id: 'A', text: "墨鏡", icon: "🕶️", isCorrect: false },
+      { id: 'B', text: "口罩", icon: "😷", isCorrect: true },
+      { id: 'C', text: "耳機", icon: "🎧", isCorrect: false },
+    ]
+  }
+];
+
+const QUESTIONS_PER_GAME = 5;
+
+// 獨立的遊戲內容組件
+const GameContent = ({ question, onAnswer, feedback, speaking, onSpeak }) => {
+  // 注意：這裡已經移除了 useEffect 自動朗讀的程式碼
+  
+  return (
+    _react2.default.createElement('div', { className: "flex flex-col h-full max-w-4xl mx-auto w-full"     ,}
+      /* Question Card */
+      , _react2.default.createElement(_framermotion.motion.div, { 
+        key: question.id, // 確保切換題目時有動畫
+        initial: { opacity: 0, y: 20 },
+        animate: { opacity: 1, y: 0 },
+        transition: { duration: 0.4 },
+        className: "bg-white rounded-3xl shadow-lg p-6 md:p-8 mb-6 relative border-b-8 border-pink-200 flex-grow flex flex-col justify-center items-center text-center mt-4"               ,}
+
+         , _react2.default.createElement('button', { 
+           onClick: () => onSpeak(question.question),
+           className: `absolute top-4 right-4 p-3 rounded-full transition-all ${speaking ? 'bg-pink-200 text-pink-600 scale-110' : 'bg-gray-100 text-gray-400 hover:bg-pink-100 hover:text-pink-500'}`,
+           title: "點擊朗讀題目",}
+
+           , _react2.default.createElement(_lucidereact.Volume2, { size: 28,} )
+         )
+
+        , _react2.default.createElement('h2', { className: "text-2xl md:text-3xl font-bold text-gray-800 leading-relaxed px-8"     ,}
+          , question.question
+        )
+        , _react2.default.createElement('p', { className: "text-sm text-gray-400 mt-2"  ,}, "(點擊右上角喇叭聽題目)")
+      )
+
+      /* Options Grid */
+      , _react2.default.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-4"     ,}
+        , question.options.map((option) => (
+          _react2.default.createElement(_framermotion.motion.button, {
+            key: question.id + option.id, // 複合 key 確保題目切換時按鈕也會重繪
+            initial: { opacity: 0, scale: 0.9 },
+            animate: { opacity: 1, scale: 1 },
+            transition: { duration: 0.3, delay: 0.1 },
+            whileHover: { scale: 1.02 },
+            whileTap: { scale: 0.98 },
+            onClick: () => onAnswer(option.isCorrect),
+            disabled: feedback !== null,
+            className: `
+              relative h-48 md:h-56 rounded-2xl shadow-md flex flex-col items-center justify-center gap-4 transition-all border-4
+              ${feedback === null 
+                ? 'bg-white border-white hover:border-pink-300 hover:shadow-xl cursor-pointer' 
+                : option.isCorrect 
+                  ? 'bg-green-50 border-green-400' 
+                  : 'bg-gray-50 border-gray-200 opacity-50'
+              }
+            `,}
+
+            , _react2.default.createElement('span', { className: "text-6xl md:text-7xl filter drop-shadow-sm"   ,}, option.icon)
+            , _react2.default.createElement('span', { className: "text-xl md:text-2xl font-bold text-gray-700"   ,}, option.text)
+
+            , feedback === 'correct' && option.isCorrect && (
+              _react2.default.createElement('div', { className: "absolute inset-0 bg-green-500/20 rounded-xl flex items-center justify-center animate-in fade-in zoom-in duration-300"          ,}
+                , _react2.default.createElement(_lucidereact.CheckCircle, { size: 64, className: "text-green-600 bg-white rounded-full"  ,} )
+              )
+            )
+          )
+        ))
+      )
+    )
+  );
+};
+
+ function LiDongClothingGame() {
+  const [gameState, setGameState] = _react.useState.call(void 0, 'start'); // start, playing, result
+  const [activeQuestions, setActiveQuestions] = _react.useState.call(void 0, []); 
+  const [currentQuestionIndex, setCurrentQuestionIndex] = _react.useState.call(void 0, 0);
+  const [score, setScore] = _react.useState.call(void 0, 0);
+  const [feedback, setFeedback] = _react.useState.call(void 0, null);
+  const [isMuted, setIsMuted] = _react.useState.call(void 0, false);
+  const [speaking, setSpeaking] = _react.useState.call(void 0, false);
+
+  // Audio Refs
+  const bgmRef = _react.useRef.call(void 0, null);
+  const correctSfxRef = _react.useRef.call(void 0, null);
+  const wrongSfxRef = _react.useRef.call(void 0, null);
+  const clickSfxRef = _react.useRef.call(void 0, null);
+
+  // 初始化音效
+  _react.useEffect.call(void 0, () => {
+    bgmRef.current = new Audio(SOUNDS.bgm);
+    bgmRef.current.loop = true;
+    bgmRef.current.volume = 0.3;
+
+    correctSfxRef.current = new Audio(SOUNDS.correct);
+    wrongSfxRef.current = new Audio(SOUNDS.wrong);
+    clickSfxRef.current = new Audio(SOUNDS.click);
+    clickSfxRef.current.volume = 0.5;
+
+    return () => {
+      if (bgmRef.current) {
+        bgmRef.current.pause();
+        bgmRef.current = null;
+      }
+      window.speechSynthesis.cancel();
+    };
+  }, []);
+
+  // 控制背景音樂靜音
+  _react.useEffect.call(void 0, () => {
+    if (bgmRef.current) {
+      bgmRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  // 朗讀功能
+  const speakText = _react.useCallback.call(void 0, (text) => {
+    if (isMuted) return;
+    
+    // 確保之前的語音停止
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-HK'; // 廣東話
+    utterance.rate = 0.9; 
+    utterance.pitch = 1.1;
+
+    utterance.onstart = () => setSpeaking(true);
+    utterance.onend = () => setSpeaking(false);
+    utterance.onerror = () => setSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  }, [isMuted]);
+
+  const stopSpeaking = () => {
+    window.speechSynthesis.cancel();
+    setSpeaking(false);
+  };
+
+  const playSound = (type) => {
+    if (isMuted) return;
+    const playAudio = (ref) => {
+        if (ref.current) {
+            ref.current.currentTime = 0;
+            ref.current.play().catch(e => console.log("Audio play failed", e));
+        }
+    };
+
+    switch (type) {
+      case 'click': playAudio(clickSfxRef); break;
+      case 'correct': playAudio(correctSfxRef); break;
+      case 'wrong': playAudio(wrongSfxRef); break;
+      default: break;
+    }
+  };
+
+  const shuffleQuestions = () => {
+    const shuffled = [...QUESTION_POOL].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, QUESTIONS_PER_GAME);
+  };
+
+  const startGame = () => {
+    playSound('click');
+    stopSpeaking();
+    
+    const selectedQuestions = shuffleQuestions();
+    setActiveQuestions(selectedQuestions);
+    setCurrentQuestionIndex(0);
+    setScore(0);
+    setFeedback(null);
+    setGameState('playing');
+    
+    if (bgmRef.current && !isMuted) {
+      bgmRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleAnswer = (isCorrect) => {
+    if (feedback !== null) return; // Prevent double clicks
+
+    stopSpeaking(); // 停止朗讀
+
+    if (isCorrect) {
+      playSound('correct');
+      setFeedback('correct');
+      setScore(prev => prev + 1);
+    } else {
+      playSound('wrong');
+      setFeedback('wrong');
+    }
+
+    // 延遲進入下一題
+    setTimeout(() => {
+      setFeedback(null);
+      if (currentQuestionIndex < activeQuestions.length - 1) {
+        setCurrentQuestionIndex(prev => prev + 1);
+      } else {
+        setGameState('result');
+      }
+    }, 1500);
+  };
+
+  const restartGame = () => {
+    stopSpeaking();
+    setGameState('start');
+  };
+
+  return (
+    _react2.default.createElement('div', { className: "min-h-screen bg-gradient-to-br from-blue-100 to-pink-100 font-sans text-gray-800 flex flex-col"       ,}
+      /* Header */
+      , _react2.default.createElement('header', { className: "bg-white/80 backdrop-blur-md shadow-sm p-4 sticky top-0 z-10"      ,}
+        , _react2.default.createElement('div', { className: "max-w-6xl mx-auto flex justify-between items-center"    ,}
+          , _react2.default.createElement('div', { className: "flex items-center gap-3"  ,}
+            , _react2.default.createElement('div', { className: "bg-pink-500 p-2 rounded-xl text-white"   ,}
+              , _react2.default.createElement(_lucidereact.Shirt, { size: 24,} )
+            )
+            , _react2.default.createElement('h1', { className: "text-xl md:text-2xl font-bold text-pink-600 tracking-wide"    ,}, "生活自理小達人"
+
+            )
+          )
+
+          , _react2.default.createElement('button', {
+            onClick: () => setIsMuted(!isMuted),
+            className: `p-3 rounded-full transition-colors ${isMuted ? 'bg-gray-200 text-gray-500' : 'bg-pink-100 text-pink-600'}`,}
+
+            , isMuted ? _react2.default.createElement(_lucidereact.VolumeX, { size: 24,} ) : _react2.default.createElement(_lucidereact.Music, { size: 24,} )
+          )
+        )
+      )
+
+      /* Main Content */
+      , _react2.default.createElement('main', { className: "flex-grow flex flex-col items-center justify-center p-4 md:p-6 w-full"       ,}
+        , _react2.default.createElement(_framermotion.AnimatePresence, { mode: "wait",}
+
+          /* START SCREEN */
+          , gameState === 'start' && (
+            _react2.default.createElement(_framermotion.motion.div, { 
+              key: "start",
+              initial: { opacity: 0, scale: 0.9 },
+              animate: { opacity: 1, scale: 1 },
+              exit: { opacity: 0, y: -20 },
+              className: "text-center max-w-lg w-full bg-white/60 backdrop-blur-sm p-8 rounded-3xl shadow-xl border-4 border-white"         ,}
+
+              , _react2.default.createElement('div', { className: "mb-8 relative inline-block"  ,}
+                , _react2.default.createElement('div', { className: "absolute inset-0 bg-pink-200 rounded-full blur-xl opacity-50 animate-pulse"      ,})
+                , _react2.default.createElement(_lucidereact.Shirt, { size: 100, className: "text-pink-500 relative z-10"  ,} )
+              )
+              , _react2.default.createElement('h2', { className: "text-3xl md:text-4xl font-bold text-gray-800 mb-4"    ,}, "選衣服挑戰"
+
+              )
+              , _react2.default.createElement('p', { className: "text-lg text-gray-600 mb-8 leading-relaxed"   ,}, "看看不同的場合和天氣，"
+                , _react2.default.createElement('br', null), "你能選出最合適的衣服嗎？"
+
+              )
+              , _react2.default.createElement('button', {
+                onClick: startGame,
+                className: "w-full bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white text-xl font-bold py-4 px-8 rounded-2xl shadow-lg transform transition hover:scale-105 active:scale-95 flex items-center justify-center gap-3"                    ,}
+
+                , _react2.default.createElement(_lucidereact.Play, { size: 28, fill: "currentColor",} ), "開始遊戲"
+
+              )
+            )
+          )
+
+          /* PLAYING SCREEN */
+          , gameState === 'playing' && activeQuestions.length > 0 && (
+            _react2.default.createElement('div', { className: "w-full flex flex-col h-full"   ,}
+              /* Progress Bar */
+              , _react2.default.createElement('div', { className: "w-full max-w-2xl mx-auto mb-4 flex items-center gap-4"      ,}
+                , _react2.default.createElement('span', { className: "font-bold text-pink-600 text-lg"  ,}
+                  , currentQuestionIndex + 1, " / "  , QUESTIONS_PER_GAME
+                )
+                , _react2.default.createElement('div', { className: "flex-grow h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner"     ,}
+                  , _react2.default.createElement(_framermotion.motion.div, { 
+                    className: "h-full bg-pink-500 rounded-full"  ,
+                    initial: { width: 0 },
+                    animate: { width: `${((currentQuestionIndex + 1) / QUESTIONS_PER_GAME) * 100}%` },
+                    transition: { duration: 0.5 },}
+                  )
+                )
+              )
+
+              , _react2.default.createElement(GameContent, { 
+                question: activeQuestions[currentQuestionIndex],
+                onAnswer: handleAnswer,
+                feedback: feedback,
+                speaking: speaking,
+                onSpeak: speakText,}
+              )
+            )
+          )
+
+          /* RESULT SCREEN */
+          , gameState === 'result' && (
+            _react2.default.createElement(_framermotion.motion.div, { 
+              key: "result",
+              initial: { opacity: 0, scale: 0.9 },
+              animate: { opacity: 1, scale: 1 },
+              className: "text-center max-w-lg w-full bg-white p-8 rounded-3xl shadow-2xl border-t-8 border-pink-400"        ,}
+
+              , _react2.default.createElement('h2', { className: "text-3xl font-bold text-gray-800 mb-6"   ,}, "遊戲結束！")
+
+              , _react2.default.createElement('div', { className: "flex justify-center items-center gap-2 mb-8"    ,}
+                , _react2.default.createElement('div', { className: "text-6xl font-black text-pink-500"  ,}
+                  , score
+                )
+                , _react2.default.createElement('div', { className: "text-2xl text-gray-400 font-bold self-end mb-2"    ,}, "/ "
+                   , QUESTIONS_PER_GAME, " 分"
+                )
+              )
+
+              , _react2.default.createElement('div', { className: "mb-8",}
+                , score === QUESTIONS_PER_GAME ? (
+                  _react2.default.createElement('div', { className: "bg-yellow-100 text-yellow-800 p-4 rounded-xl font-bold text-lg flex items-center justify-center gap-2"         ,}, "🏆 太厲害了！你是穿搭大師！"
+
+                  )
+                ) : score >= QUESTIONS_PER_GAME / 2 ? (
+                  _react2.default.createElement('div', { className: "bg-blue-100 text-blue-800 p-4 rounded-xl font-bold text-lg"     ,}, "👍 很棒喔！繼續加油！"
+
+                  )
+                ) : (
+                  _react2.default.createElement('div', { className: "bg-gray-100 text-gray-600 p-4 rounded-xl font-bold text-lg"     ,}, "💪 沒關係，再試一次會更好！"
+
+                  )
+                )
+              )
+
+              , _react2.default.createElement('div', { className: "flex gap-4" ,}
+                , _react2.default.createElement('button', {
+                  onClick: restartGame,
+                  className: "flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 px-6 rounded-xl transition-colors"        ,}
+, "回首頁"
+
+                )
+                , _react2.default.createElement('button', {
+                  onClick: startGame,
+                  className: "flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-xl shadow-md transition-transform active:scale-95 flex items-center justify-center gap-2"              ,}
+
+                  , _react2.default.createElement(_lucidereact.Shuffle, { size: 20,} ), "再玩一次"
+
+                )
+              )
+            )
+          )
+
+        )
+      )
+    )
+  );
+} exports.default = LiDongClothingGame;
+</script></head>
+  <body>
+  
+
+<div id="preview-app"></div></body></html>
